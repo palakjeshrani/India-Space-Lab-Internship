@@ -3,7 +3,7 @@ A collection of hands-on aerospace projects exploring drone systems, rocketry, a
 
 ## 🚀 Projects
 
-### 1. Drone Technology
+### [🚁 Drone Technology](./Project%201-%20Drone%20Technology)
 Exploration of drone systems, components, design, and working principles.
 
 ### 2. Rocketry
