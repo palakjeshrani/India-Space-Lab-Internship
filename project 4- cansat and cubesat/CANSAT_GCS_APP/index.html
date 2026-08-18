@@ -1,0 +1,569 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+
+<title>CanSat Ground Control Software</title>
+
+<link rel="stylesheet" href="style.css">
+
+
+<!-- Chart.js -->
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+
+<!-- Leaflet Map -->
+<link rel="stylesheet"
+href="https://unpkg.com/leaflet/dist/leaflet.css"/>
+
+<script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
+
+
+</head>
+
+
+
+<body>
+
+
+<header>
+
+<h1>
+🚀 CanSat Ground Control Station
+</h1>
+
+</header>
+
+
+
+
+<!-- CONTROL BAR -->
+
+<section class="control">
+
+
+<button onclick="startTelemetry()">
+START TELEMETRY
+</button>
+
+
+<button onclick="stopTelemetry()">
+STOP TELEMETRY
+</button>
+
+
+<button onclick="exportCSV()">
+EXPORT CSV
+</button>
+
+
+<button onclick="exportGraph()">
+EXPORT GRAPH
+</button>
+
+
+<button onclick="syncTime()">
+SYNC PC TIME
+</button>
+
+
+<button onclick="resetPacket()">
+RESET PACKET
+</button>
+
+
+</section>
+
+
+
+
+
+
+<!-- STATUS -->
+
+<section class="status">
+
+
+<div>
+
+<h3>
+Error Code
+</h3>
+
+<span id="errorCode">
+0000
+</span>
+
+</div>
+
+
+
+<div>
+
+<h3>
+Mission Status
+</h3>
+
+<span id="missionStatus">
+READY
+</span>
+
+</div>
+
+
+
+<div>
+
+<h3>
+Command Status
+</h3>
+
+<span id="commandStatus">
+NONE
+</span>
+
+</div>
+
+
+
+</section>
+
+
+
+
+
+
+<!-- MISSION CONTROL -->
+
+
+<section class="mission">
+
+
+<h2>
+Mission Control
+</h2>
+
+
+<button onclick="separatePayload()">
+Manual Separation
+</button>
+
+
+
+<button onclick="deployParachute()">
+Emergency Parachute
+</button>
+
+
+
+<button onclick="activateBackup()">
+Redundant Activation
+</button>
+
+
+
+<h3>
+
+Command:
+
+<span id="missionCommand">
+NONE
+</span>
+
+
+</h3>
+
+
+
+</section>
+
+
+
+
+
+
+
+<!-- TELEMETRY -->
+
+
+<section class="telemetry">
+
+
+<div class="panel">
+
+
+<h2>
+Container Telemetry
+</h2>
+
+
+
+<p>
+Altitude :
+<span id="altitude">
+0
+</span>
+m
+</p>
+
+
+
+<p>
+Pressure :
+<span id="pressure">
+0
+</span>
+hPa
+</p>
+
+
+
+<p>
+Battery Voltage :
+<span id="voltage">
+0
+</span>
+V
+</p>
+
+
+
+<p>
+Descent Rate :
+<span id="descentRate">
+0
+</span>
+m/s
+</p>
+
+
+
+</div>
+
+
+
+
+
+
+
+<div class="panel">
+
+
+<h2>
+Payload Telemetry
+</h2>
+
+
+
+<p>
+Temperature :
+<span id="temperature">
+0
+</span>
+°C
+</p>
+
+
+
+
+<p>
+GPS :
+<span id="gps">
+22.57 , 88.36
+</span>
+</p>
+
+
+
+
+<p>
+Roll :
+<span id="roll">
+0
+</span>
+°
+</p>
+
+
+
+<p>
+Pitch :
+<span id="pitch">
+0
+</span>
+°
+</p>
+
+
+
+<p>
+Yaw :
+<span id="yaw">
+0
+</span>
+°
+</p>
+
+
+
+</div>
+
+
+
+</section>
+
+
+
+
+
+
+
+
+
+<!-- PACKET LOG -->
+
+
+<section class="packet">
+
+
+<h2>
+Telemetry Packet Log
+</h2>
+
+
+
+<table id="packetTable">
+
+
+<tr>
+
+<th>
+Packet
+</th>
+
+
+<th>
+Altitude
+</th>
+
+
+<th>
+Temperature
+</th>
+
+
+<th>
+Voltage
+</th>
+
+
+<th>
+Error
+</th>
+
+
+</tr>
+
+
+</table>
+
+
+
+</section>
+
+
+
+
+
+
+
+
+
+<!-- REAL TIME GRAPHS -->
+
+<section class="graphs">
+
+
+<div class="chartBox">
+
+<h2>Altitude vs Time</h2>
+
+<canvas id="altitudeChart"></canvas>
+
+</div>
+
+
+
+<div class="chartBox">
+
+<h2>Temperature vs Time</h2>
+
+<canvas id="temperatureChart"></canvas>
+
+</div>
+
+
+
+<div class="chartBox">
+
+<h2>Pressure vs Time</h2>
+
+<canvas id="pressureChart"></canvas>
+
+</div>
+
+
+
+
+<div class="chartBox">
+
+<h2>Descent Rate vs Time</h2>
+
+<canvas id="descentChart"></canvas>
+
+</div>
+
+
+
+
+<div class="chartBox">
+
+<h2>Battery Voltage vs Time</h2>
+
+<canvas id="voltageChart"></canvas>
+
+</div>
+
+
+
+</section>
+
+
+
+
+
+
+
+<!-- MAP AND ORIENTATION -->
+
+
+<section class="visual">
+
+
+
+<div class="mapBox">
+
+
+<h2>
+GPS Tracking
+</h2>
+
+
+<div id="map">
+
+</div>
+
+
+</div>
+
+
+
+
+
+
+
+
+<div class="orientationBox">
+
+
+<h2>
+Orientation
+</h2>
+
+
+
+<div id="orientation">
+
+
+<div id="horizon">
+
+🚀
+
+</div>
+
+
+</div>
+
+
+
+</div>
+
+
+
+</section>
+
+
+
+
+
+
+
+
+
+<!-- CAMERA -->
+
+
+<section class="camera">
+
+
+<h2>
+Live Video Stream
+</h2>
+
+
+
+
+<video id="video"
+autoplay>
+</video>
+
+
+
+
+<br><br>
+
+
+
+<button onclick="startCamera()">
+
+START CAMERA
+
+</button>
+
+
+
+
+<button onclick="stopCamera()">
+
+STOP CAMERA
+
+</button>
+
+
+
+
+</section>
+
+
+
+
+
+
+
+<script src="main.js"></script>
+
+
+</body>
+
+
+</html>
