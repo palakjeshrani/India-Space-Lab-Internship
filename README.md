@@ -1,8 +1,5 @@
 # India-Space-Lab-Internship
 A collection of hands-on aerospace projects exploring drone systems, rocketry, and CanSat/CubeSat technology, developed during the India Space Lab Internship 2026.
-# India Space Lab Internship 2026 🚀
-
-A collection of hands-on aerospace engineering projects completed during the India Space Lab Summer Internship & Technical Training Program 2026.
 
 ## 🚀 Projects
 
