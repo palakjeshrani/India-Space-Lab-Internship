@@ -6,10 +6,10 @@ A collection of hands-on aerospace projects exploring drone systems, rocketry, a
 ### [🚁 Drone Technology](./Project%201-%20Drone%20Technology)
 Exploration of drone systems, components, design, and working principles.
 
-### 2. Rocketry
+### [🚀 Rocketry](./PROJECT%202-%20ROCKETRY%20TRAINING.pdf)
 Hands-on learning and exploration of rocket systems, propulsion, aerodynamics, and related aerospace concepts.
 
-### 3. CanSat & CubeSat
+### [🛰️ CanSat / CubeSat](./project%204-%20cansat%20and%20cubesat)
 Introduction to small satellite systems, payloads, subsystems, and the design principles behind CanSat and CubeSat missions.
 
 ## 🛠️ Skills & Concepts
